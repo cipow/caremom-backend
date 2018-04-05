@@ -22,6 +22,8 @@ class CreateTableHospitals extends Migration
             $table->string('city');
             $table->string('telephone');
             $table->text('logo');
+            $table->text('latitude');
+            $table->text('longitude');
             $table->string('api_token');
             $table->timestamps();
         });
