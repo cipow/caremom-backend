@@ -29,4 +29,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function hospital() {
+      return $this->belongsTo('App\Hospital', 'hospital_id', 'id');
+    }
 }
