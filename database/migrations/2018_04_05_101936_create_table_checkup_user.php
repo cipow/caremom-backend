@@ -15,7 +15,17 @@ class CreateTableCheckupUser extends Migration
     {
         Schema::create('checkups_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->unsignedInteger('checkup_id');
+            $table->unsignedInteger('user_id');
+
+            $table->foreign('checkup_id')
+                  ->references('id')->on('checkpus')
+                  ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                  ->references('id')->on('users')
+                  ->onDelete('cascade');
+            // $table->timestamps();
         });
     }
 
