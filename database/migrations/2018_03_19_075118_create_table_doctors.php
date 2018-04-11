@@ -17,9 +17,10 @@ class CreateTableDoctors extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->text('address');
-            $table->string('phone');
-            $table->text('picture');
+            $table->string('password');
+            $table->text('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('picture')->nullable();
             $table->string('api_token');
             $table->unsignedInteger('hospital_id');
             $table->timestamps();

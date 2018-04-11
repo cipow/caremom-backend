@@ -16,10 +16,10 @@ class CreateTableUsers extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('password');
-            $table->text('address');
-            $table->text('picture');
+            $table->text('address')->nullable();;
+            $table->text('picture')->nullable();;
             $table->string('api_token');
             $table->unsignedInteger('hospital_id');
             $table->timestamps();
