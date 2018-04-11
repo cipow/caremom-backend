@@ -20,6 +20,7 @@ class CreateTableUsers extends Migration
             $table->string('password');
             $table->text('address');
             $table->text('picture');
+            $table->string('api_token');
             $table->unsignedInteger('hospital_id');
             $table->timestamps();
 
