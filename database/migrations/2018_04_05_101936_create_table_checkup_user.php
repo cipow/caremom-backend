@@ -19,7 +19,7 @@ class CreateTableCheckupUser extends Migration
             $table->unsignedInteger('user_id');
 
             $table->foreign('checkup_id')
-                  ->references('id')->on('checkpus')
+                  ->references('id')->on('checkups')
                   ->onDelete('cascade');
 
             $table->foreign('user_id')

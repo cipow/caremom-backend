@@ -33,4 +33,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function hospital() {
       return $this->belongsTo('App\Hospital', 'hospital_id', 'id');
     }
+
+    public function checkups() {
+      return $this->belongsToMany('App\Chekup', 'checkups_users', 'user_id', 'checkup_id');
+    }
 }

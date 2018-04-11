@@ -13,7 +13,7 @@ class CreateTableCheckups extends Migration
      */
     public function up()
     {
-        Schema::create('checkpus', function (Blueprint $table) {
+        Schema::create('checkups', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('day', ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu']);
             $table->time('time_start');
