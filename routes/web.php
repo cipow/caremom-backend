@@ -14,3 +14,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => '/api/hospital'], function($router) {
+  $router->post('/register', 'HospitalController@register');
+  $router->post('/login', 'HospitalController@login');
+});
