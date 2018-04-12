@@ -187,6 +187,36 @@ class HospitalController extends Controller
     }
 
     public function editProfilGeolocation(Request $req) {
+      $validator = Validator::make($req->all(), [
+        'latitude' => 'required|string',
+        'longitude' => 'required|string'
+      ]);
 
+      if ($validator->fails()) {
+        return response()->json([
+          'status'  => 'error',
+          'message' => 'bad request'
+        ], 400);
+      }
+
+      $id = Hospital::getIdFromHeader($req->header('Authorization'));
+      $hospital = Hospital::find($id);
+
+      $hospital->latitude = $req->latitude;
+      $hospital->longitude = $req->longitude;
+
+      if ($hospital->save()) {
+        return response()->json([
+          'status'  => 'success',
+          'message' => 'profil updated'
+        ], 200);
+
+      } else {
+        return response()->json([
+          'status'  => 'error',
+          'message' => 'Internal Server Error'
+        ], 500);
+        
+      }
     }
 }
