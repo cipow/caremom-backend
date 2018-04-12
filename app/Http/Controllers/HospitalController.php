@@ -12,7 +12,10 @@ class HospitalController extends Controller
 
     public function __construct()
     {
-        //
+        $this->middleware('auth', ['except' => [
+            'login',
+            'register'
+          ]]);
     }
 
     public function login(Request $req) {
@@ -26,11 +29,12 @@ class HospitalController extends Controller
       }
 
       if (Hash::check($req->password, $hospital->password)) {
-        $hospital->api_token = base64_encode(str_random(30)).base64_encode($hospital->email);
+        $hospital->api_token = '1.'.base64_encode(str_random(30)).'.'.base64_encode($hospital->email);
         if ($hospital->save()) {
           return response()->json([
             'status'  => 'success',
-            'message' => 'login success'
+            'message' => 'login success',
+            'token'   => $hospital->api_token
           ], 200);
         } else {
           return response()->json([
@@ -71,7 +75,7 @@ class HospitalController extends Controller
       $hospital->address = $req->address;
       $hospital->city = $req->city;
       $hospital->telephone = $req->telephone;
-      $hospital->api_token = base64_encode(str_random(30)).base64_encode($hospital->email);
+      $hospital->api_token = '1.'.base64_encode(str_random(30)).'.'.base64_encode($hospital->email);
 
       if ($hospital->save()) {
         return response()->json([
@@ -85,5 +89,15 @@ class HospitalController extends Controller
           'message' => 'Internal Server Error'
         ], 500);
       }
+    }
+
+    public function getProfil(Request $req) {
+      $id = Hospital::getIdFromHeader($req->header('Authorization'));
+      $hospital = Hospital::find($id);
+
+      return response()->json([
+        'status'  => 'success',
+        'data'    => $hospital
+      ], 200);
     }
 }
