@@ -16,7 +16,8 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => '/api/hospital'], function($router) {
-  $router->get('/', 'HospitalController@getProfil');
-  $router->post('/register', 'HospitalController@register');
-  $router->post('/login', 'HospitalController@login');
+  $router->get('/', 'Hospital\HospitalController@getProfil');
+  $router->post('/', 'Hospital\HospitalController@editProfil');
+  $router->post('/register', 'Hospital\HospitalController@register');
+  $router->post('/login', 'Hospital\HospitalController@login');
 });
