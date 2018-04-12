@@ -18,6 +18,8 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => '/api/hospital'], function($router) {
   $router->get('/', 'Hospital\HospitalController@getProfil');
   $router->post('/', 'Hospital\HospitalController@editProfil');
+  $router->post('/logo', 'Hospital\HospitalController@editProfilLogo');
+  $router->post('/geolocation', 'Hospital\HospitalController@editProfilGeolocation');
   $router->post('/register', 'Hospital\HospitalController@register');
   $router->post('/login', 'Hospital\HospitalController@login');
 });

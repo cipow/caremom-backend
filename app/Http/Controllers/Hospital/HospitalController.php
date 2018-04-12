@@ -138,4 +138,55 @@ class HospitalController extends Controller
         ], 500);
       }
     }
+
+    public function editProfilLogo(Request $req) {
+      $validator = Validator::make($req->all(), [
+        'logo' => 'required|image|mimes:jpg,jpeg,png'
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json([
+          'status'  => 'error',
+          'message' => 'invalid image'
+        ], 400);
+      }
+
+      $id = Hospital::getIdFromHeader($req->header('Authorization'));
+      $hospital = Hospital::find($id);
+
+      if ($req->file('logo')->isValid()) {
+        $destinationPath = 'image/hospital/logo/';
+        $file = $req->file('logo');
+        $extension = $file->getClientOriginalExtension();
+        $filename = base64_encode($hospital->email).'.'.$extension;
+
+        $file->move($destinationPath, $filename);
+        $hospital->logo = url('/'.$destinationPath.$filename);
+
+        if ($hospital->save()) {
+          return response()->json([
+            'status'  => 'success',
+            'message' => 'uploaded'
+          ], 200);
+
+        } else {
+          return response()->json([
+            'status'  => 'error',
+            'message' => 'Internal Server Error'
+          ], 500);
+
+        }
+
+      } else {
+        return response()->json([
+          'status'  => 'error',
+          'message' => 'upload unsuccessfully'
+        ], 400);
+
+      }
+    }
+
+    public function editProfilGeolocation(Request $req) {
+
+    }
 }
