@@ -15,16 +15,15 @@ class CreateTableHospitals extends Migration
     {
         Schema::create('hospitals', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name', 40);
             $table->string('email')->unique();
             $table->string('password');
             $table->text('address');
-            $table->string('city');
-            $table->string('telephone');
+            $table->string('city', 20);
+            $table->string('telephone', 20);
             $table->text('logo')->nullable();
             $table->text('latitude')->nullable();
             $table->text('longitude')->nullable();
-            $table->string('api_token');
             $table->timestamps();
         });
     }

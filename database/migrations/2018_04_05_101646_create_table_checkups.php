@@ -16,8 +16,7 @@ class CreateTableCheckups extends Migration
         Schema::create('checkups', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('day', ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu']);
-            $table->time('time_start');
-            $table->time('time_end');
+            $table->string('time');
             $table->unsignedInteger('doctor_id');
             //$table->timestamps();
 
