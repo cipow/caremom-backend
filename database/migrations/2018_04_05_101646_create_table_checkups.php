@@ -33,6 +33,6 @@ class CreateTableCheckups extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checkpus');
+        Schema::dropIfExists('checkups');
     }
 }
