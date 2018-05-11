@@ -4,8 +4,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Hospital extends Model {
-
-  protected $hidden = ['password', 'api_token', 'created_at', 'updated_at'];
+  protected $fillable = ['name', 'email', 'password', 'city', 'address', 'telephone'];
+  protected $hidden = ['password', 'created_at', 'updated_at'];
 
   public function doctors() {
     return $this->hasMany('App\Doctor', 'hospital_id', 'id');
