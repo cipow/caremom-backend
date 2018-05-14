@@ -15,18 +15,17 @@ class HospitalController extends Controller
   protected $hospital;
 
   public function __construct() {
-    $this->middleware('jwt-auth:hospital', [ 'except' => [
-        'register',
-        'login'
-      ]]);
+    $this->middleware('jwt-auth:hospital', [ 'except' => [ 'register', 'login' ]]);
 
-    try {
-      $this->hospital = Hospital::toObject(Input::get('token'));
-    } catch (Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Internal Server Error'
-      ], 500);
+    if (Input::get('token')) {
+      try {
+        $this->hospital = Hospital::toObject(Input::get('token'));
+      } catch (Exception $e) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Internal Server Error'
+        ], 500);
+      }
     }
 
   }
