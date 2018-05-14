@@ -98,4 +98,27 @@ class HospitalController extends Controller
     }
 
   }
+
+  public function update(Request $req) {
+    $this->validate($req, [
+      'name' => 'required|string|max:40',
+      'city' => 'required|string|max:20',
+      'address' => 'required|string',
+      'telephone' => 'required|string|max:20'
+    ]);
+
+    try {
+      $hospital = Hospital::toObject(Input::get('token'));
+      $hospital->update($req->only('name', 'city', 'address', 'telephone'));
+      return response()->json([
+        'success' => true
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
 }
