@@ -121,4 +121,25 @@ class HospitalController extends Controller
     }
 
   }
+
+  public function updateGeolocation(Request $req) {
+    $this->validate($req, [
+      'latitude' => 'required',
+      'longitude' => 'required'
+    ]);
+
+    try {
+      $hospital = Hospital::toObject(Input::get('token'));
+      $hospital->update($req->only('latitude', 'longitude'));
+      return response()->json([
+        'success' => true
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
 }
