@@ -132,10 +132,10 @@ class HospitalController extends Controller
 
   public function geolocation(Request $req) {
     $this->validate($req, [
-      'latitude' => 'required|numeric',
-      'longitude' => 'required|numeric'
+      'lat' => 'required|numeric',
+      'lng' => 'required|numeric'
     ]);
-    return $this->update($req->only('latitude', 'longitude'));
+    return $this->update($req->only('lat', 'lng'));
   }
 
   public function password(Request $req) {
