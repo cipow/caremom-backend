@@ -64,4 +64,51 @@ class DoctorController extends Controller {
     }
 
   }
+
+  public function resetPassword($id) {
+    try {
+      $doctor = $this->hospital->doctors()->findOrFail($id);
+      $pass = str_random(6);
+      $doctor->update(['password' => Hash::make($pass)]);
+      return response()->json([
+        'success' => true,
+        'password' => $pass
+      ], 200);
+    } catch (Exception $e) {
+      if ($e instanceof Illuminate\Database\Eloquent\ModelNotFoundException) {
+        return response()->json([
+          'success' => false
+        ], 403);
+      }
+
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
+
+  public function delete($id) {
+    try {
+      $doctor = $this->hospital->doctors()->findOrFail($id);
+      $doctor->delete();
+      return response()->json([
+        'success' => true
+      ], 202);
+    } catch (Exception $e) {
+      if ($e instanceof Illuminate\Database\Eloquent\ModelNotFoundException) {
+        return response()->json([
+          'success' => false
+        ], 403);
+      }
+
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+  }
+
+
 }

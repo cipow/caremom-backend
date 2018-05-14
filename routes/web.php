@@ -29,6 +29,8 @@ $router->group(['prefix' => '/api'], function($router) {
     $router->group(['prefix' => '/doctor'], function($router) {
       $router->get('/', 'Hospital\DoctorController@all');
       $router->get('/{id}', 'Hospital\DoctorController@get');
+      $router->get('/{id}/reset', 'Hospital\DoctorController@resetPassword');
+      $router->delete('/{id}/delete', 'Hospital\DoctorController@delete');
       $router->post('/create', 'Hospital\DoctorController@create');
     });
   });
