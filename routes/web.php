@@ -25,6 +25,10 @@ $router->group(['prefix' => '/api'], function($router) {
     $router->post('/logo', 'Hospital\HospitalController@logo');
     $router->post('/register', 'Hospital\HospitalController@register');
     $router->post('/login', 'Hospital\HospitalController@login');
+
+    $router->group(['prefix' => '/doctor'], function($router) {
+      $router->post('/create', 'Hospital\DoctorController@create');
+    });
   });
 
 });

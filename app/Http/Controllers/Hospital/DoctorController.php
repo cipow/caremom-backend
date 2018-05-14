@@ -28,6 +28,25 @@ class DoctorController extends Controller {
   }
 
   public function create(Request $req) {
-    
+    $this->validate($req, [
+      'email' => 'required|email|unique:doctors|max:250',
+      'password' => 'required|min:6|max:32'
+    ]);
+
+    try {
+      $this->hospital->doctors()->create([
+        'email' => $req->email,
+        'password' => Hash::make($req->password)
+      ]);
+      return response()->json([
+        'success' => true
+      ], 201);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
   }
 }
