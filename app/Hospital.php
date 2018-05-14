@@ -7,6 +7,11 @@ class Hospital extends Model {
   protected $fillable = ['name', 'email', 'password', 'city', 'address', 'telephone'];
   protected $hidden = ['password', 'created_at', 'updated_at'];
 
+  public static function toObject($token) {
+    $decode = \Firebase\JWT\JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+    return Hospital::findOrFail($decode->sub);
+  }
+
   public function doctors() {
     return $this->hasMany('App\Doctor', 'hospital_id', 'id');
   }

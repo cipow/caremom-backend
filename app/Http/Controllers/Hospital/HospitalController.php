@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Hospital;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 use App\Hospital;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Facades\JWTFactory;
+use JWT;
 use Exception;
 
 class HospitalController extends Controller
 {
   public function __construct() {
-    $this->middleware('jwt.auth', [ 'except' => [
+    $this->middleware('jwt-auth:hospital', [ 'except' => [
         'register',
         'login'
       ]]);
@@ -60,8 +60,14 @@ class HospitalController extends Controller
 
     if ($hospital = Hospital::where('email', $req->email)->first()) {
       if (Hash::check($req->password, $hospital->password)) {
-        $payload = JWTFactory::sub($hospital->id)->aud('hospital')->make();
-        $token = JWTAuth::encode($payload)->get();
+        $payload = [
+          'iss' => 'caremom',
+          'iat' => time(),
+          'exp' => time() + (((60 * 60) * 24) * 7),
+          'sub' => $hospital->id,
+          'aud' => 'hospital'
+        ];
+        $token = JWT::encode($payload, env('JWT_SECRET'));
 
         return response()->json([
           'success' => true,
@@ -78,9 +84,12 @@ class HospitalController extends Controller
   }
 
   public function get() {
-    $id = JWTAuth::parseToken()->getPayload()->get('sub');
     try {
-      return response(Hospital::findOrFail($id), 200);
+      $hospital = Hospital::toObject(Input::get('token'));
+      return response()->json([
+        'success' => true,
+        'data' => $hospital
+      ], 200);
     } catch (Exception $e) {
       return response()->json([
         'success' => false,
