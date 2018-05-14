@@ -142,4 +142,26 @@ class HospitalController extends Controller
     }
 
   }
+
+  public function updatePassword(Request $req) {
+    $this->validate($req, [
+      'old_password' => 'required|min:6|max:32',
+      'password' => 'required|min:6|max:32',
+      'password_confirmation' => 'required|min:6|max:32|same:password'
+    ]);
+
+    try {
+      $hospital = Hospital::toObject(Input::get('token'));
+      $hospital->update($req->only('password'));
+      return response()->json([
+        'success' => true
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
 }

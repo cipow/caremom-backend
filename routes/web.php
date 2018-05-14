@@ -21,6 +21,7 @@ $router->group(['prefix' => '/api'], function($router) {
     $router->get('/', 'Hospital\HospitalController@get');
     $router->put('/', 'Hospital\HospitalController@update');
     $router->put('/geo', 'Hospital\HospitalController@updateGeolocation');
+    $router->put('/password', 'Hospital\HospitalController@updatePassword');
     $router->post('/register', 'Hospital\HospitalController@register');
     $router->post('/login', 'Hospital\HospitalController@login');
   });
