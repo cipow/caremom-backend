@@ -15,8 +15,12 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => '/api/hospital'], function($router) {
-  $router->get('/', 'Hospital\HospitalController@get');
-  $router->post('/register', 'Hospital\HospitalController@register');
-  $router->post('/login', 'Hospital\HospitalController@login');
+$router->group(['prefix' => '/api'], function($router) {
+
+  $router->group(['prefix' => '/hospital'], function($router) {
+    $router->get('/', 'Hospital\HospitalController@get');
+    $router->post('/register', 'Hospital\HospitalController@register');
+    $router->post('/login', 'Hospital\HospitalController@login');
+  });
+
 });
