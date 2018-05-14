@@ -4,7 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Hospital extends Model {
-  protected $fillable = ['name', 'email', 'password', 'city', 'address', 'telephone'];
+  protected $fillable = ['name', 'email', 'password', 'city', 'address', 'telephone', 'lat', 'lng', 'logo'];
   protected $hidden = ['password', 'created_at', 'updated_at'];
 
   public static function toObject($token) {

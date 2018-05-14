@@ -12,11 +12,25 @@ use Exception;
 
 class HospitalController extends Controller
 {
+  protected $hospital;
+
   public function __construct() {
     $this->middleware('jwt-auth:hospital', [ 'except' => [
         'register',
         'login'
       ]]);
+
+    if (Input::get('token')) {
+      try {
+        $this->hospital = Hospital::toObject(Input::get('token'));
+      } catch (Exception $e) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Internal Server Error'
+        ], 500);
+      }
+    }
+
   }
 
   public function register(Request $req) {
@@ -84,25 +98,16 @@ class HospitalController extends Controller
   }
 
   public function get() {
-    try {
-      $hospital = Hospital::toObject(Input::get('token'));
-      return response()->json([
-        'success' => true,
-        'data' => $hospital
-      ], 200);
-    } catch (Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Internal Server Error'
-      ], 500);
-    }
+    return response()->json([
+      'success' => true,
+      'data' => $this->hospital
+    ], 200);
 
   }
 
   private function update(array $attribute) {
     try {
-      $hospital = Hospital::toObject(Input::get('token'));
-      $hospital->update($attribute);
+      $this->hospital->update($attribute);
       return response()->json([
         'success' => true
       ], 200);
@@ -127,8 +132,8 @@ class HospitalController extends Controller
 
   public function geolocation(Request $req) {
     $this->validate($req, [
-      'latitude' => 'required',
-      'longitude' => 'required'
+      'latitude' => 'required|numeric',
+      'longitude' => 'required|numeric'
     ]);
     return $this->update($req->only('latitude', 'longitude'));
   }
@@ -139,7 +144,21 @@ class HospitalController extends Controller
       'password' => 'required|min:6|max:32',
       'password_confirmation' => 'required|min:6|max:32|same:password'
     ]);
-    return $this->update($req->only('password'));
+    return $this->update(['password'=>Hash::make($req->password)]);
+  }
+
+  public function logo(Request $req) {
+    $this->validate($req, [
+      'logo' => 'required|image|mimes:jpg,jpeg,png'
+    ]);
+
+    $file = $req->file('logo');
+    $path = 'images/hospitals/logos/';
+
+    $filename = base64_encode('logo-'.$this->hospital->id).'.'.$file->getClientOriginalExtension();
+    $file->move($path, $filename);
+
+    return $this->update(['logo' => url('/'.$path.$filename)]);
   }
 
 }
