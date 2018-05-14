@@ -20,15 +20,13 @@ class HospitalController extends Controller
         'login'
       ]]);
 
-    if (Input::get('token')) {
-      try {
-        $this->hospital = Hospital::toObject(Input::get('token'));
-      } catch (Exception $e) {
-        return response()->json([
-          'success' => false,
-          'message' => 'Internal Server Error'
-        ], 500);
-      }
+    try {
+      $this->hospital = Hospital::toObject(Input::get('token'));
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
     }
 
   }
