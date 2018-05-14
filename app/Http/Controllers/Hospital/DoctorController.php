@@ -49,4 +49,19 @@ class DoctorController extends Controller {
     }
 
   }
+
+  public function all() {
+    return response()->json($this->hospital->doctors, 200);
+  }
+
+  public function get($id) {
+    try {
+      return response()->json($this->hospital->doctors()->findOrFail($id));
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false
+      ], 403);
+    }
+
+  }
 }
