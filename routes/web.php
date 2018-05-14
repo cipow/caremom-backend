@@ -33,6 +33,15 @@ $router->group(['prefix' => '/api'], function($router) {
       $router->delete('/{id}/delete', 'Hospital\DoctorController@delete');
       $router->post('/create', 'Hospital\DoctorController@create');
     });
+
+    $router->group(['prefix' => '/user'], function($router) {
+      $router->get('/', 'Hospital\UserController@all');
+      $router->get('/{id}', 'Hospital\UserController@get');
+      $router->get('/{id}/reset', 'Hospital\UserController@resetPassword');
+      $router->delete('/{id}/delete', 'Hospital\UserController@delete');
+      $router->post('/create', 'Hospital\UserController@create');
+    });
+
   });
 
 });

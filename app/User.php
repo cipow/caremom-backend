@@ -7,11 +7,11 @@ class User extends Model
 {
 
     protected $fillable = [
-        'name', 'email',
+        'name', 'phone', 'password', 'city', 'address', 'avatar'
     ];
 
     protected $hidden = [
-        'password',
+        'password', 'created_at', 'updated_at'
     ];
 
     public function hospital() {

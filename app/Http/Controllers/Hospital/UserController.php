@@ -10,7 +10,7 @@ use App\Hospital;
 use JWT;
 use Exception;
 
-class DoctorController extends Controller {
+class UserController extends Controller {
   protected $hospital;
 
   public function __construct() {
@@ -29,13 +29,13 @@ class DoctorController extends Controller {
 
   public function create(Request $req) {
     $this->validate($req, [
-      'email' => 'required|email|unique:doctors|max:250',
+      'phone' => 'required|string|unique:users|max:20',
       'password' => 'required|min:6|max:32'
     ]);
 
     try {
-      $this->hospital->doctors()->create([
-        'email' => $req->email,
+      $this->hospital->users()->create([
+        'phone' => $req->phone,
         'password' => Hash::make($req->password)
       ]);
       return response()->json([
@@ -51,12 +51,12 @@ class DoctorController extends Controller {
   }
 
   public function all() {
-    return response()->json($this->hospital->doctors, 200);
+    return response()->json($this->hospital->users, 200);
   }
 
   public function get($id) {
     try {
-      return response()->json($this->hospital->doctors()->findOrFail($id));
+      return response()->json($this->hospital->users()->findOrFail($id));
     } catch (Exception $e) {
       return response()->json([
         'success' => false
@@ -67,7 +67,7 @@ class DoctorController extends Controller {
 
   public function resetPassword($id) {
     try {
-      $doctor = $this->hospital->doctors()->findOrFail($id);
+      $doctor = $this->hospital->users()->findOrFail($id);
       $pass = str_random(6);
       $doctor->update(['password' => Hash::make($pass)]);
       return response()->json([
@@ -91,7 +91,7 @@ class DoctorController extends Controller {
 
   public function delete($id) {
     try {
-      $doctor = $this->hospital->doctors()->findOrFail($id);
+      $doctor = $this->hospital->users()->findOrFail($id);
       $doctor->delete();
       return response()->json([
         'success' => true
