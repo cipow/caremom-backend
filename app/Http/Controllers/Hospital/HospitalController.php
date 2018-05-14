@@ -99,69 +99,47 @@ class HospitalController extends Controller
 
   }
 
-  public function update(Request $req) {
+  private function update(array $attribute) {
+    try {
+      $hospital = Hospital::toObject(Input::get('token'));
+      $hospital->update($attribute);
+      return response()->json([
+        'success' => true
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
+
+  public function profil(Request $req) {
     $this->validate($req, [
       'name' => 'required|string|max:40',
       'city' => 'required|string|max:20',
       'address' => 'required|string',
       'telephone' => 'required|string|max:20'
     ]);
-
-    try {
-      $hospital = Hospital::toObject(Input::get('token'));
-      $hospital->update($req->only('name', 'city', 'address', 'telephone'));
-      return response()->json([
-        'success' => true
-      ], 200);
-    } catch (Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Internal Server Error'
-      ], 500);
-    }
-
+    return $this->update($req->only('name', 'city', 'address', 'telephone'));
   }
 
-  public function updateGeolocation(Request $req) {
+  public function geolocation(Request $req) {
     $this->validate($req, [
       'latitude' => 'required',
       'longitude' => 'required'
     ]);
-
-    try {
-      $hospital = Hospital::toObject(Input::get('token'));
-      $hospital->update($req->only('latitude', 'longitude'));
-      return response()->json([
-        'success' => true
-      ], 200);
-    } catch (Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Internal Server Error'
-      ], 500);
-    }
-
+    return $this->update($req->only('latitude', 'longitude'));
   }
 
-  public function updatePassword(Request $req) {
+  public function password(Request $req) {
     $this->validate($req, [
       'old_password' => 'required|min:6|max:32',
       'password' => 'required|min:6|max:32',
       'password_confirmation' => 'required|min:6|max:32|same:password'
     ]);
-
-    try {
-      $hospital = Hospital::toObject(Input::get('token'));
-      $hospital->update($req->only('password'));
-      return response()->json([
-        'success' => true
-      ], 200);
-    } catch (Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Internal Server Error'
-      ], 500);
-    }
-
+    return $this->update($req->only('password'));
   }
+
 }
