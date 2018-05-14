@@ -22,8 +22,8 @@ class CreateTableHospitals extends Migration
             $table->string('city', 20);
             $table->string('telephone', 20);
             $table->text('logo')->nullable();
-            $table->decimal('latitude', 10, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
+            $table->float('lat', 10, 6)->nullable();
+            $table->float('lng', 10, 6)->nullable();
             $table->timestamps();
         });
     }
