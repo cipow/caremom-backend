@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Exception;
-use Tymon\JWTAuth\JWTAuth;
+use JWT;
 
 class JWTAuthcentication
 {
@@ -15,15 +15,19 @@ class JWTAuthcentication
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
         try {
-          $token = JWTAuth::parseToken()->getPayload();
+          $token = JWT::decode($request->get('token'), env('JWT_SECRET'), ['HS256']);
+
+          if ($token->aud == $guard)
+            return $next($request);
+          else
+            throw new Exception("Error Processing Request", 1);
+
         } catch (Exception $e) {
           return response('Unauthorized.', 401);
         }
 
-
-        return $next($request);
     }
 }
