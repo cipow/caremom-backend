@@ -62,7 +62,7 @@ class UserController extends Controller
   public function get() {
     return response()->json([
       'success' => true,
-      'data' => $this->user
+      'data' => $this->user->with('hospital')
     ]);
   }
 

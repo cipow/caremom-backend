@@ -62,7 +62,7 @@ class DoctorController extends Controller
   public function get() {
     return response()->json([
       'success' => true,
-      'data' => $this->doctor
+      'data' => $this->doctor->with('hospital')
     ]);
   }
 
