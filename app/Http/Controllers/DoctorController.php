@@ -59,5 +59,60 @@ class ExampleController extends Controller
     ], 400);
   }
 
+  public function get() {
+    return response()->json([
+      'success' => true,
+      'data' => $this->doctor
+    ]);
+  }
+
+  private function update(array $attribute) {
+    try {
+      $this->doctor->update($attribute);
+      return response()->json([
+        'success' => true
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
+
+  public function profil(Request $req) {
+    $this->validate($req, [
+      'name' => 'required|string|max:40',
+      'city' => 'required|string|max:20',
+      'address' => 'required|string',
+      'phone' => 'required|string|max:20'
+    ]);
+    return $this->update($req->only('name', 'city', 'address', 'phone'));
+  }
+
+  public function password(Request $req) {
+    $this->validate($req, [
+      'old_password' => 'required|min:6|max:32',
+      'password' => 'required|min:6|max:32',
+      'password_confirmation' => 'required|min:6|max:32|same:password'
+    ]);
+    return $this->update(['password'=>Hash::make($req->password)]);
+  }
+
+  public function avatar(Request $req) {
+    $this->validate($req, [
+      'avatar' => 'required|image|mimes:jpg,jpeg,png'
+    ]);
+
+    $file = $req->file('avatar');
+    $path = 'images/doctors/';
+
+    $filename = base64_encode('avatar-'.$this->doctor->id).'.'.$file->getClientOriginalExtension();
+    $file->move($path, $filename);
+
+    return $this->update(['avatar' => url('/'.$path.$filename)]);
+  }
+
 
 }

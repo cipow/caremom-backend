@@ -21,7 +21,7 @@ class CreateTableDoctors extends Migration
             $table->string('city', 20)->nullable();
             $table->text('address')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->text('picture')->nullable();
+            $table->text('avatar')->nullable();
             $table->unsignedInteger('hospital_id');
             $table->timestamps();
 

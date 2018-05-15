@@ -44,4 +44,12 @@ $router->group(['prefix' => '/api'], function($router) {
 
   });
 
+  $router->group(['prefix' => '/doctor'], function($router) {
+    $router->get('/', 'DoctorController@get');
+    $router->put('/', 'DoctorController@profil');
+    $router->put('/password', 'DoctorController@password');
+    $router->post('/avatar', 'DoctorController@avatar');
+    $router->post('/login', 'DoctorController@login');
+  });
+
 });
