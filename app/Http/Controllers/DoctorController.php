@@ -114,5 +114,80 @@ class ExampleController extends Controller
     return $this->update(['avatar' => url('/'.$path.$filename)]);
   }
 
+  public function createCheckup(Request $req) {
+    $this->validate($req, [
+      'day' => 'required|string|max:6',
+      'time' => 'required|string'
+    ]);
+
+    try {
+      $this->doctor->checkups()->create($req->only('day', 'time'));
+      return response()->json([
+        'success' => true
+      ], 201);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false
+      ], 400);
+    }
+
+  }
+
+  public function allCheckup() {
+    return response()->json($this->doctor->checkups, 200);
+  }
+
+  private function getCheckup($id) {
+    try {
+      return $this->hospital->checkups()->findOrFail($id);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false
+      ], 403);
+    }
+  }
+
+  public function viewCheckup($id) {
+    return response()->json($this->getCheckup($id), 200);
+  }
+
+  public function updateCheckup(Request $req, $id) {
+    $this->validate($req, [
+      'day' => 'required|string|max:6',
+      'time' => 'required|string'
+    ]);
+
+    $checkup = $this->getCheckup($id);
+
+    try {
+      $checkup->update($req->only('day', 'time'));
+      return response()->json([
+        'success' => true
+      ], 200);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+
+  }
+
+  public function deleteCheckup($id) {
+    try {
+      $checkup = $this->getCheckup($id);
+      $checkup->delete();
+      return response()->json([
+        'success' => true
+      ], 202);
+    } catch (Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Internal Server Error'
+      ], 500);
+    }
+  }
+
+
 
 }

@@ -50,6 +50,14 @@ $router->group(['prefix' => '/api'], function($router) {
     $router->put('/password', 'DoctorController@password');
     $router->post('/avatar', 'DoctorController@avatar');
     $router->post('/login', 'DoctorController@login');
+
+    $router->group(['prefix' => '/checkup'], function($router) {
+      $router->get('/', 'DoctorController@allCheckup');
+      $router->get('/{id}', 'DoctorController@viewCheckup');
+      $router->put('/{id}', 'DoctorController@updateCheckup');
+      $router->delete('/{id}', 'DoctorController@deleteCheckup');
+      $router->post('/create', 'DoctorController@createCheckup');
+    });
   });
 
 });
