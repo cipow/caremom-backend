@@ -113,5 +113,14 @@ class UserController extends Controller
     return $this->update(['avatar' => url('/'.$path.$filename)]);
   }
 
+  public function hospitalList() {
+    $hospitals = App\Hospital::with(['images', 'doctors.checkups'])->get();
+    return response()->json($hospitals, 200);
+  }
+
+  public function doctorList() {
+    return response()->json($this->user->hospital->doctors()->with('checkup'), 200);
+  }
+
 
 }

@@ -65,7 +65,9 @@ $router->group(['prefix' => '/api'], function($router) {
     $router->put('/', 'UserController@profil');
     $router->put('/password', 'UserController@password');
     $router->post('/avatar', 'UserController@avatar');
-    $router->post('/login', 'UserController@login'); 
+    $router->post('/login', 'UserController@login');
+    $router->get('/hospitals', 'UserController@hospitalList');
+    $router->get('/doctors', 'UserController@doctorList');
   });
 
 });
