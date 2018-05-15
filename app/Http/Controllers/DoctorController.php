@@ -117,7 +117,7 @@ class ExampleController extends Controller
   public function createCheckup(Request $req) {
     $this->validate($req, [
       'day' => 'required|string|max:6',
-      'time' => 'required|string'
+      'time' => 'required|string|max:250'
     ]);
 
     try {
@@ -154,7 +154,7 @@ class ExampleController extends Controller
   public function updateCheckup(Request $req, $id) {
     $this->validate($req, [
       'day' => 'required|string|max:6',
-      'time' => 'required|string'
+      'time' => 'required|string|max:250'
     ]);
 
     $checkup = $this->getCheckup($id);
