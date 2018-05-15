@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Input;
 use App\Doctor;
 use Exception;
 
-class ExampleController extends Controller
+class DoctorController extends Controller
 {
   protected $doctor;
 

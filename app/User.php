@@ -14,6 +14,11 @@ class User extends Model
         'password', 'created_at', 'updated_at'
     ];
 
+    public static function toObject($token) {
+      $decode = \Firebase\JWT\JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+      return User::findOrFail($decode->sub);
+    }
+
     public function hospital() {
       return $this->belongsTo('App\Hospital', 'hospital_id', 'id');
     }

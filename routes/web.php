@@ -60,4 +60,12 @@ $router->group(['prefix' => '/api'], function($router) {
     });
   });
 
+  $router->group(['prefix' => '/user'], function($router) {
+    $router->get('/', 'UserController@get');
+    $router->put('/', 'UserController@profil');
+    $router->put('/password', 'UserController@password');
+    $router->post('/avatar', 'UserController@avatar');
+    $router->post('/login', 'UserController@login'); 
+  });
+
 });
