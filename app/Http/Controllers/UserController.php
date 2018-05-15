@@ -119,7 +119,7 @@ class UserController extends Controller
   }
 
   public function doctorList() {
-    return response()->json($this->user->hospital->doctors()->with('checkup'), 200);
+    return response()->json($this->user->hospital->doctors()->with('checkups'), 200);
   }
 
 
